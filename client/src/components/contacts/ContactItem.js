@@ -1,18 +1,18 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import {startCase} from 'lodash';
+import { startCase } from 'lodash';
 import ContactContext from '../../context/contact/contactContext';
 
-const ContactItem = ({contact}) => {
+const ContactItem = ({ contact }) => {
   const contactContext = useContext(ContactContext);
 
-  const {id, name, email, phone, type} = contact;
-  const {deleteContact, setCurrent, clearCurrent} = contactContext;
+  const { _id, name, email, phone, type } = contact;
+  const { deleteContact, setCurrent, clearCurrent } = contactContext;
 
   const onEdit = () => setCurrent(contact);
 
   const onDelete = () => {
-    deleteContact(id);
+    deleteContact(_id);
     clearCurrent();
   };
 
@@ -21,10 +21,11 @@ const ContactItem = ({contact}) => {
       <h3 className="text-primary text-left">
         {name}{' '}
         <span
-          style={{float: 'right'}}
+          style={{ float: 'right' }}
           className={`badge ${
             type === 'professional' ? 'badge-success' : 'badge-primary'
-          }`}>
+          }`}
+        >
           {startCase(type)}
         </span>
       </h3>
@@ -53,7 +54,7 @@ const ContactItem = ({contact}) => {
 };
 
 ContactItem.propTypes = {
-  contact: PropTypes.object.isRequired,
+  contact: PropTypes.object.isRequired
 };
 
 export default ContactItem;
