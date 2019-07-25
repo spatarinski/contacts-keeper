@@ -13,7 +13,8 @@ import {
   UPDATE_CONTACT,
   FILTER_CONTACTS,
   CLEAR_FILTER,
-  CONTACT_ERROR
+  CONTACT_ERROR,
+  CLEAR_ERRORS
 } from '../types';
 
 const ContactState = props => {
@@ -50,7 +51,10 @@ const ContactState = props => {
 
       dispatch({ type: ADD_CONTACT, payload: res.data });
     } catch (err) {
-      dispatch({ type: CONTACT_ERROR, payload: err.response.msg });
+      dispatch({
+        type: CONTACT_ERROR,
+        payload: err.response.data.errors.map(error => error.msg).join(' and ')
+      });
     }
   };
 
@@ -78,6 +82,7 @@ const ContactState = props => {
 
       dispatch({ type: UPDATE_CONTACT, payload: res.data });
     } catch (err) {
+      alert(err.response.msg);
       dispatch({ type: CONTACT_ERROR, payload: err.response.msg });
     }
   };
@@ -105,6 +110,9 @@ const ContactState = props => {
     dispatch({ type: CLEAR_FILTER });
   };
 
+  // Clear Errors
+  const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
+
   return (
     <ContactContext.Provider
       value={{
@@ -117,7 +125,8 @@ const ContactState = props => {
         updateContact,
         filterContacts,
         clearFilter,
-        clearContacts
+        clearContacts,
+        clearErrors
       }}
     >
       {props.children}

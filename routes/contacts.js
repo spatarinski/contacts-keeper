@@ -10,7 +10,9 @@ const _ = require('lodash');
 // @access    Private
 router.get('/', auth, async (req, res) => {
   try {
-    const contacts = await Contact.find({ user: req.user.id }).sort({ date: -1 });
+    const contacts = await Contact.find({ user: req.user.id }).sort({
+      date: -1
+    });
     res.json(contacts);
   } catch (err) {
     console.error(err.message);
@@ -28,13 +30,14 @@ router.post(
     [
       check('name', 'Name is required')
         .not()
-        .isEmpty()
+        .isEmpty(),
+      check('email', 'Email value is not valid').isEmail()
     ]
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ errors: errors.errors });
     }
 
     const { name, email, phone, type } = req.body;
@@ -79,7 +82,11 @@ router.put('/:id', auth, async (req, res) => {
     const { name, email, phone, type } = req.body;
     const contactFields = _.omitBy({ name, email, phone, type }, _.isUndefined);
 
-    contact = await Contact.findByIdAndUpdate(req.params.id, { $set: contactFields }, { new: true });
+    contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      { $set: contactFields },
+      { new: true }
+    );
 
     res.json(contact);
   } catch (err) {

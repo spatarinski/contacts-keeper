@@ -1,17 +1,32 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import AlertContext from '../../context/alert/alertContext';
 import ContactContext from '../../context/contact/contactContext';
 
 const initialContact = {
   name: '',
   email: '',
   phone: '',
-  type: 'personal',
+  type: 'personal'
 };
 
 const ContactForm = () => {
+  const { setAlert } = useContext(AlertContext);
+
   const contactContext = useContext(ContactContext);
 
-  const {addContact, updateContact, clearCurrent, current} = contactContext;
+  const {
+    addContact,
+    updateContact,
+    clearCurrent,
+    current,
+    error,
+    clearErrors
+  } = contactContext;
+
+  if (error) {
+    setAlert(error, 'danger');
+    clearErrors();
+  }
 
   useEffect(
     () => {
@@ -21,15 +36,15 @@ const ContactForm = () => {
         setContact(initialContact);
       }
     },
-    [contactContext, current],
+    [contactContext, current]
   );
 
-  const [contact, setContact] = useState({...initialContact});
+  const [contact, setContact] = useState({ ...initialContact });
 
-  const {name, email, phone, type} = contact;
+  const { name, email, phone, type } = contact;
 
   const onChange = e =>
-    setContact({...contact, [e.target.name]: e.target.value});
+    setContact({ ...contact, [e.target.name]: e.target.value });
 
   const onSubmit = e => {
     e.preventDefault();

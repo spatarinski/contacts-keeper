@@ -8,7 +8,8 @@ import {
   CLEAR_CURRENT,
   UPDATE_CONTACT,
   CLEAR_FILTER,
-  FILTER_CONTACTS
+  FILTER_CONTACTS,
+  CLEAR_ERRORS
 } from '../types';
 
 export default (state, action) => {
@@ -76,6 +77,11 @@ export default (state, action) => {
       return {
         ...state,
         error: payload
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null
       };
     default:
       return state;
