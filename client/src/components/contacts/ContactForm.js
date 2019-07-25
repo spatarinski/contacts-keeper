@@ -72,13 +72,15 @@ const ContactForm = () => {
         name="name"
         value={name}
         onChange={onChange}
+        required
       />
       <input
-        type="text"
+        type="email"
         placeholder="Email"
         name="email"
         value={email}
         onChange={onChange}
+        required
       />
       <input
         type="text"
